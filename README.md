@@ -41,6 +41,6 @@ Siga estes passos no seu terminal (Prompt de Comando no Windows, Terminal no mac
 Primeiro, você precisa baixar o código do projeto do GitHub para o seu computador.  
 
 ```bash
-git clone [https://github.com/Tithania/MecanicoAPP](https://github.com/Tithania/MecanicoAPP)
+git clone https://github.com/Tithania/MecanicoAPP
 ```
 
