@@ -36,6 +36,9 @@ export default function EstoqueScreen() { // Nome do componente
   // Estado para a lista de itens de estoque
   const [estoqueItems, setEstoqueItems] = useState<EstoqueItem[]>([]);
 
+  //PARA OCULTAR FORMULARIO
+  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+
   // Efeito para carregar os itens de estoque quando a tela é montada ou focada
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -85,6 +88,9 @@ export default function EstoqueScreen() { // Nome do componente
       setQuantidade('');
       setPrecoUnitario('');
       loadEstoqueItems(); // Recarrega a lista de itens
+
+      setShowAddForm(false);
+
     } catch (error) {
       console.error('Erro ao adicionar item de estoque:', error);
       Alert.alert('Erro', 'Não foi possível adicionar o item ao estoque.');
@@ -130,33 +136,44 @@ export default function EstoqueScreen() { // Nome do componente
           <Text style={styles.title}>Gerenciamento de Estoque</Text>
         </View>
 
-        {/* Formulário para adicionar item - ESSA PARTE NAO ROLA*/}
-        <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>Adicionar Novo Item</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nome do Item"
-            value={nomeItem}
-            onChangeText={setNomeItem}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Quantidade"
-            value={quantidade}
-            onChangeText={setQuantidade}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Preço Unitário (Ex: 12.50)"
-            value={precoUnitario}
-            onChangeText={setPrecoUnitario}
-            keyboardType="numeric"
-          />
-          <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
-            <Text style={styles.buttonText}>Adicionar Item</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.toggleFormButton}
+          onPress={() => setShowAddForm(!showAddForm)} // altera o valor do showForm
+        >
+          <Text style={styles.toggleFormButtonText}> 
+            {/*muda texto dependendo da forma */}
+            {showAddForm ? 'Ocultar formulario' : 'Adicionar novo item'}
+          </Text>
+        </TouchableOpacity>
+
+        {showAddForm && (
+          <View style={styles.formContainer}>
+            <Text style={styles.formTitle}>Adicionar Novo Item</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Nome do Item"
+              value={nomeItem}
+              onChangeText={setNomeItem}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Quantidade"
+              value={quantidade}
+              onChangeText={setQuantidade}
+              keyboardType="numeric"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Preço Unitário (Ex: 12.50)"
+              value={precoUnitario}
+              onChangeText={setPrecoUnitario}
+              keyboardType="numeric"
+            />
+            <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+              <Text style={styles.buttonText}>Adicionar Item</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Lista de Itens no Estoque - ALERACAO FLATLIST GERENCIA A PROPRIA ROLAGEM O CONTEINER AGORA TEM FLEX */}
         <View style={styles.listContainer}>
@@ -199,7 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     paddingTop: 40,
   },
-  keyboardAvoidingView: { // NOVO ESTILO: Garante que o KeyboardAvoidingView ocupe todo o espaço
+  keyboardAvoidingView: {
     flex: 1,
   },
   header: {
@@ -220,6 +237,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
+  },
+  // NOVO ESTILO: para o botão de alternar o formulário
+  toggleFormButton: {
+    backgroundColor: '#6c757d', // Cor cinza
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  toggleFormButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   formContainer: {
     backgroundColor: '#fff',
@@ -279,7 +315,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    flex: 1, // ALTERAÇÃO: Permite que a lista ocupe o restante do espaço disponível
+    flex: 1,
   },
   listTitle: {
     fontSize: 20,
