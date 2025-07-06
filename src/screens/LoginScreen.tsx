@@ -7,30 +7,39 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert, // Usado para mostrar mensagens (sucesso/erro) na tela
+  Alert, // Usado para exibir mensagens de sucesso/erro
 } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native'; // Importa useNavigation e NavigationProp para navegação
 
-// Define as propriedades que esta tela pode receber.
-// onLoginSuccess será uma função que o componente pai (App.tsx) passará.
-interface LoginScreenProps {
-  onLoginSuccess: () => void;
-}
+// Define os tipos de parâmetros para as rotas do seu Stack Navigator.
+// Isso ajuda o TypeScript a entender quais rotas estão disponíveis e quais parâmetros elas esperam.
+type RootStackParamList = {
+  Login: undefined; // A tela de Login não recebe parâmetros específicos via navegação
+  Dashboard: undefined; // A tela de Dashboard também não recebe parâmetros
+  ClientManagement: undefined; // A tela de gerenciamento de clientes também não recebe parâmetros
+};
 
-// O componente funcional da tela de login
-const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
-  // Estados para armazenar o que o usuário digita nos campos
+export default function LoginScreen() {
+  // Obtém o objeto de navegação, tipado com as rotas definidas acima.
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  // Estados para armazenar o que o usuário digita nos campos de usuário e senha
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  // Função que será chamada quando o botão de login for pressionado
+  /**
+   * Função para lidar com a tentativa de login.
+   * Verifica as credenciais e navega para o Dashboard em caso de sucesso.
+   */
   const handleLogin = () => {
-    // A lógica de login para o trabalho da faculdade:
-    // Verifica se o usuário é 'admin' e a senha é '123'
+    // Credenciais fixas para o trabalho de faculdade (usuário: 'admin', senha: '123')
     if (username === 'admin' && password === '123') {
-      Alert.alert('Sucesso', 'Login realizado com sucesso!'); // Mostra um alerta de sucesso
-      onLoginSuccess(); // Chama a função que indica ao App.tsx que o login foi bem-sucedido
+      Alert.alert('Sucesso', 'Login realizado com sucesso!'); // Exibe um alerta de sucesso
+      // Navega para a tela 'Dashboard' após o login bem-sucedido.
+      // O 'replace' garante que o usuário não possa voltar para a tela de login pelo botão 'voltar'.
+      navigation.replace('Dashboard');
     } else {
-      Alert.alert('Erro', 'Usuário ou senha inválidos.'); // Mostra um alerta de erro
+      Alert.alert('Erro', 'Usuário ou senha inválidos.'); // Exibe um alerta de erro
     }
   };
 
@@ -41,19 +50,22 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       {/* Campo para o nome de usuário */}
       <TextInput
         style={styles.input}
-        placeholder="Usuário" // Texto que aparece antes de digitar
-        value={username} // Valor atual do campo, ligado ao estado 'username'
-        onChangeText={setUsername} // Atualiza o estado 'username' a cada digitação
-        autoCapitalize="none" // Importante para não capitalizar automaticamente
+        placeholder="Usuário" // Texto que aparece antes do usuário digitar
+        value={username} // O valor atual do campo, ligado ao estado 'username'
+        onChangeText={setUsername} // Função que atualiza o estado 'username' a cada digitação
+        autoCapitalize="none" // Desativa a capitalização automática para nomes de usuário
+        autoCorrect={false} // Desativa a correção automática
       />
 
       {/* Campo para a senha */}
       <TextInput
         style={styles.input}
-        placeholder="Senha" // Texto que aparece antes de digitar
-        value={password} // Valor atual do campo, ligado ao estado 'password'
-        onChangeText={setPassword} // Atualiza o estado 'password' a cada digitação
+        placeholder="Senha" // Texto que aparece antes do usuário digitar
+        value={password} // O valor atual do campo, ligado ao estado 'password'
+        onChangeText={setPassword} // Função que atualiza o estado 'password' a cada digitação
         secureTextEntry // Faz com que o texto digitado apareça como bolinhas (para senhas)
+        autoCapitalize="none" // Desativa a capitalização automática
+        autoCorrect={false} // Desativa a correção automática
       />
 
       {/* Botão de Login */}
@@ -62,9 +74,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
-// Estilos para os componentes da tela
+// Estilos para os componentes da tela de Login
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Faz com que o container ocupe todo o espaço disponível
@@ -98,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centraliza o texto verticalmente
     alignItems: 'center', // Centraliza o texto horizontalmente
     marginTop: 20, // Margem superior
-    // Sombras (opcional, para um visual mais "elevado")
+    // Sombras para um visual mais "elevado"
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -111,5 +123,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', // Negrito
   },
 });
-
-export default LoginScreen; // Exporta o componente para que possa ser usado em outros arquivos
