@@ -7,8 +7,9 @@ import {
   StyleSheet,
   Alert,
   SafeAreaView,
-  ScrollView,
   FlatList,
+  KeyboardAvoidingView, // componente para ajustar layout com teclado
+  Platform, //verificar plataforma IOS e android
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -120,10 +121,16 @@ export default function EstoqueScreen() { // Nome do componente
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Gerenciamento de Estoque</Text>
+      {/*ALTERACAO KEYBOARD SUBISTITUIR SCROLLVIEW */}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajusta o comportamento para iOS/Android
+      >
+        <View style={styles.header}>
+          <Text style={styles.title}>Gerenciamento de Estoque</Text>
+        </View>
 
-        {/* Formulário para adicionar item */}
+        {/* Formulário para adicionar item - ESSA PARTE NAO ROLA*/}
         <View style={styles.formContainer}>
           <Text style={styles.formTitle}>Adicionar Novo Item</Text>
           <TextInput
@@ -151,7 +158,7 @@ export default function EstoqueScreen() { // Nome do componente
           </TouchableOpacity>
         </View>
 
-        {/* Lista de Itens no Estoque */}
+        {/* Lista de Itens no Estoque - ALERACAO FLATLIST GERENCIA A PROPRIA ROLAGEM O CONTEINER AGORA TEM FLEX */}
         <View style={styles.listContainer}>
           <Text style={styles.listTitle}>Itens em Estoque</Text>
           {estoqueItems.length === 0 ? (
@@ -176,10 +183,12 @@ export default function EstoqueScreen() { // Nome do componente
                   </TouchableOpacity>
                 </View>
               )}
+              //ESPACAMENTO PARA ULTIMO ITEM DA LISTA
+              contentContainerStyle={estoqueItems.length > 0 ? {paddingBottom: 20} :{}}
             />
           )}
         </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -188,22 +197,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',
+    paddingTop: 40,
   },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
+  keyboardAvoidingView: { // NOVO ESTILO: Garante que o KeyboardAvoidingView ocupe todo o espaço
+    flex: 1,
+  },
+  header: {
+    backgroundColor: '#007bff',
+    padding: 15,
     alignItems: 'center',
+    borderRadius: 8,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#333',
+    color: '#fff',
     textAlign: 'center',
   },
   formContainer: {
     backgroundColor: '#fff',
-    width: '100%',
+    marginHorizontal: 20,
     padding: 20,
     borderRadius: 8,
     marginBottom: 20,
@@ -251,7 +271,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     backgroundColor: '#fff',
-    width: '100%',
+    marginHorizontal: 20,
     padding: 20,
     borderRadius: 8,
     shadowColor: '#000',
@@ -259,6 +279,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
+    flex: 1, // ALTERAÇÃO: Permite que a lista ocupe o restante do espaço disponível
   },
   listTitle: {
     fontSize: 20,
