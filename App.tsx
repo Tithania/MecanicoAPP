@@ -9,6 +9,8 @@ import LoginScreen from './src/screens/LoginScreen';
 import Dashboard from './src/screens/Dashboard';
 import CadastroClient from './src/screens/CadastroClient';
 import Servicos from './src/screens/Servicos';
+import Estoque from './src/screens/Estoque';
+import EstoqueScreen from './src/screens/Estoque';
 
 // Cria uma instância do Stack Navigator.
 // 'Stack' será usado para definir as telas e suas opções de navegação.
@@ -55,6 +57,13 @@ export default function App() {
           name="Servicos" // Certifique-se de que este nome de rota corresponde exatamente ao que você usa em navigation.navigate()
           component={Servicos} // Certifique-se de que este é o componente correto importado
           options={{ title: 'Cadastro de Serviços' }}
+        />
+
+        {/* Tela do estoque*/}
+        <Stack.Screen
+        name="Estoque"
+        component={EstoqueScreen}
+        options={{title: 'Gerenciamento de Estoque'}}
         />
 
         {/*

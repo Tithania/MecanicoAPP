@@ -11,6 +11,7 @@ type RootStackParamList = {
   CadastroClient: undefined; // Rota para Gerenciamento de Clientes
   Dashboard: undefined; // Rota do próprio Dashboard
   Servicos: undefined;
+  Estoque: undefined;
   // Adicione outras rotas aqui se tiver mais telas no futuro (ex: Services, Stock)
 };
 
@@ -56,7 +57,10 @@ export default function DashboardScreen() {
           </TouchableOpacity>
 
           {/* Card de Estoque (Exemplo de futura expansão) */}
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Estoque')} // Navega para a nova tela de Estoque
+          >
             <Text style={styles.cardTitle}>Estoque</Text>
             <Text style={styles.cardDescription}>Controle o estoque de peças e produtos.</Text>
           </TouchableOpacity>

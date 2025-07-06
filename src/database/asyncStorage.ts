@@ -1,11 +1,10 @@
-// src/database/asyncStorage.ts
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native'; // Usado para feedback de erro simples ao usuário
 
 // Chave única para armazenar nossos clientes no AsyncStorage
 const CLIENTES_STORAGE_KEY = '@appMecanico:clientes';
 const SERVICOS_STORAGE_KEY = '@appMecanico:servicos';
+const ESTOQUE_STORAGE_KEY = '@appMecanico:estoque';
 
 // Interface para definir a estrutura de um objeto Cliente
 export interface Cliente {
@@ -24,6 +23,15 @@ export interface Servicos {
   modelo: string;
   ano: string;
   dataCadastro: string; // data registrada do serviço
+}
+
+// interface para estrutura do estoque
+export interface EstoqueItem {
+  id: string;
+  nome: string;
+  quantidade: number;
+  precoUnitario: number;
+  dataEntrada: string; // quando item entrou em estoque
 }
 
 /**
@@ -249,4 +257,95 @@ export const clearAllServicos = async (): Promise<void> => {
     Alert.alert('Erro', 'Não foi possível limpar os serviços.');
   }
 };
+
+// funcao para o estoque
+export const getEstoqueItems = async (): Promise<EstoqueItem[]> => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(ESTOQUE_STORAGE_KEY);
+    return jsonValue !=null ? JSON.parse(jsonValue) : [];
+  }catch (e) {
+    console.error('Erro ao ler itens do estoque do AssynStorage:', e);
+    Alert.alert('Erro de leitura', 'Não foi possivel carregar itens do Estoque.');
+    return[];
+  }
+};
+
+// funcao auxiliar interna para salvar item no estoque
+const saveEstoqueItems = async (items: EstoqueItem[]) : Promise<void> => {
+  try {
+    const jsonValue = JSON.stringify(items);
+    await AsyncStorage.setItem(ESTOQUE_STORAGE_KEY, jsonValue);
+  }catch (e) {
+    console.error('Erro ao salvar itens do estoque no AsyncStorage', e);
+    Alert.alert('Error de Escrita', 'Não foi possivel salvar o item ao estoque.');
+  }
+};
+
+/**
+ * Adiciona um novo item ao estoque.
+ * @param nome Nome do item.
+ * @param quantidade Quantidade do item.
+ * @param precoUnitario Preço unitário do item.
+ * @returns Uma Promise que resolve quando o item é adicionado.
+ */
+export const addEstoqueItem = async (
+  nome: string,
+  quantidade: number,
+  precoUnitario: number,
+): Promise<void> => {
+  try {
+    const items = await getEstoqueItems();
+    const newItem: EstoqueItem = {
+      id: String(Date.now()), //ID unico para o item
+      nome,
+      quantidade,
+      precoUnitario,
+      dataEntrada: new Date().toISOString(), // data e hora da entrada
+    };
+    items.push(newItem);
+    await saveEstoqueItems(items);
+    console.log('Item adicionado ao estoque', newItem);
+  }catch (e) {
+    console.error('Erro ao adicionar item no estoque', e);
+    Alert.alert('Erro', 'Não foi possivel adicionar o item ao estoque');
+  }
+};
+
+/**
+ * Deleta um item de estoque pelo ID.
+ * @param id O ID do item a ser deletado.
+ * @returns Uma Promise que resolve quando o item é deletado.
+ */
+export const deleteEstoqueItem = async (id: string): Promise<void> => {
+  try {
+    let items = await getEstoqueItems();
+    const initialLength = items.length;
+    items = items.filter(item => item.id !== id);
+    if (items.length < initialLength) {
+      await saveEstoqueItems(items);
+      console.log(`Item de estoque com ID ${id} deletado`);
+    } else {
+      console.warn(`Item de estoque com ID ${id} não encontrado para deletar.`);
+    }
+  }catch (e) {
+    console.error('Erro ao deletar item de estoque', e);
+    Alert.alert('Erro', 'não foi possivel deletar o item de estoque.');
+  }
+};
+
+/**
+ * Limpa todos os itens de estoque do armazenamento.
+ * CUIDADO: Isso irá apagar todos os dados de estoque!
+ */
+export const clearAllEstoqueitems = async() : Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(ESTOQUE_STORAGE_KEY);
+    console.log('Todos os item do estoque foram removidos do AsyncStorage.');
+  }catch (e) {
+    console.error('Erro ao limpar itens do estoque do AsyncStorage', e);
+    Alert.alert('Erro', 'Não foi possivel limpar item do estoque.');
+  }
+};
+
+
 
