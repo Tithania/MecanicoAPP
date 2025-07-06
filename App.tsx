@@ -7,7 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'; // 
 // Importa todos os componentes de tela que serão usados na navegação
 import LoginScreen from './src/screens/LoginScreen';
 import Dashboard from './src/screens/Dashboard';
-import ClientManagementScreen from './src/screens/ClientManagementScreen';
+import CadastroClient from './src/screens/CadastroClient';
+import Servicos from './src/screens/Servicos';
 
 // Cria uma instância do Stack Navigator.
 // 'Stack' será usado para definir as telas e suas opções de navegação.
@@ -44,9 +45,16 @@ export default function App() {
 
         {/* Tela de Gerenciamento de Clientes */}
         <Stack.Screen
-          name="ClientManagement" // Nome da rota para o Gerenciamento de Clientes
-          component={ClientManagementScreen} // Componente React da tela de Gerenciamento de Clientes
-          options={{ title: 'Gerenciamento de Clientes' }} // Título exibido no cabeçalho de navegação desta tela
+          name="CadastroClient" // Nome da rota para o Gerenciamento de Clientes
+          component={CadastroClient} // Componente React da tela de Gerenciamento de Clientes
+          options={{ title: 'Cadastro Clientes' }} // Título exibido no cabeçalho de navegação desta tela
+        />
+
+        {/* Tela de Cadastro de Serviços */}
+        <Stack.Screen
+          name="Servicos" // Certifique-se de que este nome de rota corresponde exatamente ao que você usa em navigation.navigate()
+          component={Servicos} // Certifique-se de que este é o componente correto importado
+          options={{ title: 'Cadastro de Serviços' }}
         />
 
         {/*

@@ -1,22 +1,22 @@
-// src/screens/DashboardScreen.tsx
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Importa o componente de gradiente
-import { useNavigation, NavigationProp } from '@react-navigation/native'; // Importa para navegação
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Define os tipos de parâmetros para as rotas do seu Stack Navigator.
 // Isso é crucial para o TypeScript e para a navegação segura.
 type RootStackParamList = {
   Login: undefined; // Rota de Login
-  ClientManagement: undefined; // Rota para Gerenciamento de Clientes
+  CadastroClient: undefined; // Rota para Gerenciamento de Clientes
   Dashboard: undefined; // Rota do próprio Dashboard
+  Servicos: undefined;
   // Adicione outras rotas aqui se tiver mais telas no futuro (ex: Services, Stock)
 };
 
 export default function DashboardScreen() {
-  // Obtém o objeto de navegação, tipado com as rotas definidas acima.
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  // Use StackNavigationProp para tipar corretamente o objeto de navegação
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     // LinearGradient é o componente que aplica o gradiente de fundo
@@ -34,16 +34,25 @@ export default function DashboardScreen() {
           {/* Card para Gerenciar Clientes */}
           <TouchableOpacity
             style={styles.card}
-            onPress={() => navigation.navigate('ClientManagement')} // Navega para a tela de gerenciamento de clientes
+            onPress={() => navigation.navigate('CadastroClient')}
           >
-            <Text style={styles.cardTitle}>Gerenciar Clientes</Text>
+            <Text style={styles.cardTitle}>Cadastro de Clientes</Text>
             <Text style={styles.cardDescription}>Acesse a lista de clientes e suas informações.</Text>
           </TouchableOpacity>
 
-          {/* Card de Serviços (Exemplo de futura expansão) */}
+          {/* NOVO: Card de Cadastro de Serviços */}
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Servicos')} // Navega para a tela de Cadastro de Serviços
+          >
+            <Text style={styles.cardTitle}>Cadastrar Serviço</Text>
+            <Text style={styles.cardDescription}>Registre um novo serviço para um veículo.</Text>
+          </TouchableOpacity>
+
+          {/* Card de Serviços Cadastrados (Exemplo - pode ser uma lista de serviços cadastrados) */}
           <TouchableOpacity style={styles.card}>
-            <Text style={styles.cardTitle}>Serviços</Text>
-            <Text style={styles.cardDescription}>Visualize e gerencie os serviços.</Text>
+            <Text style={styles.cardTitle}>Serviços Cadastrados</Text>
+            <Text style={styles.cardDescription}>Visualize e gerencie os serviços existentes.</Text>
           </TouchableOpacity>
 
           {/* Card de Estoque (Exemplo de futura expansão) */}

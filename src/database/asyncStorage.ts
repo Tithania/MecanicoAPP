@@ -5,6 +5,7 @@ import { Alert } from 'react-native'; // Usado para feedback de erro simples ao 
 
 // Chave única para armazenar nossos clientes no AsyncStorage
 const CLIENTES_STORAGE_KEY = '@appMecanico:clientes';
+const SERVICOS_STORAGE_KEY = '@appMecanico:servicos';
 
 // Interface para definir a estrutura de um objeto Cliente
 export interface Cliente {
@@ -12,6 +13,17 @@ export interface Cliente {
   nome: string;
   telefone: string;
   endereco: string;
+}
+
+// interface para estrutura do objeto serviço
+export interface Servicos {
+  id: string;
+  nomeCliente: string;
+  carro: string;
+  placa: string;
+  modelo: string;
+  ano: string;
+  dataCadastro: string; // data registrada do serviço
 }
 
 /**
@@ -137,3 +149,104 @@ export const clearAllClientes = async (): Promise<void> => {
     Alert.alert('Erro', 'Não foi possível limpar os clientes.');
   }
 };
+
+
+// --- Novas Funções para Serviços ---
+
+
+/**
+ * Carrega todos os serviços do AsyncStorage.
+ * @returns Uma Promise que resolve com um array de serviços ou um array vazio.
+ */
+export const getServicos = async (): Promise<Servicos[]> => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(SERVICOS_STORAGE_KEY);
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
+  } catch (e) {
+    console.error('Erro ao ler serviços do AsyncStorage:', e);
+    Alert.alert('Erro de Leitura', 'Não foi possível carregar os serviços.');
+    return [];
+  }
+};
+
+/**
+ * Salva um array de serviços no AsyncStorage. (Função auxiliar interna)
+ */
+const saveServicos = async (servicos: Servicos[]): Promise<void> => {
+  try {
+    const jsonValue = JSON.stringify(servicos);
+    await AsyncStorage.setItem(SERVICOS_STORAGE_KEY, jsonValue);
+  } catch (e) {
+    console.error('Erro ao salvar serviços no AsyncStorage:', e);
+    Alert.alert('Erro de Escrita', 'Não foi possível salvar os serviços.');
+  }
+};
+
+/**
+ * Adiciona um novo serviço ao armazenamento.
+ * @param servico O objeto Servico a ser adicionado.
+ * @returns Uma Promise que resolve quando o serviço é adicionado.
+ */
+export const addServico = async (
+  nomeCliente: string,
+  carro: string,
+  placa: string,
+  modelo: string,
+  ano: string
+): Promise<void> => {
+  try {
+    const servicos = await getServicos(); // Pega a lista atual de serviços
+    const newServico: Servicos = {
+      id: String(Date.now()), // ID único para o serviço
+      nomeCliente,
+      carro,
+      placa,
+      modelo,
+      ano,
+      dataCadastro: new Date().toISOString(), // Data e hora atual do cadastro
+    };
+    servicos.push(newServico); // Adiciona o novo serviço ao array
+    await saveServicos(servicos); // Salva a lista atualizada
+    console.log('Serviço adicionado:', newServico);
+  } catch (e) {
+    console.error('Erro ao adicionar serviço:', e);
+    Alert.alert('Erro', 'Não foi possível adicionar o serviço.');
+  }
+};
+
+/**
+ * Deleta um serviço pelo ID.
+ * @param id O ID do serviço a ser deletado.
+ * @returns Uma Promise que resolve quando o serviço é deletado.
+ */
+export const deleteServico = async (id: string): Promise<void> => {
+  try {
+    let servicos = await getServicos();
+    const initialLength = servicos.length;
+    servicos = servicos.filter(servico => servico.id !== id);
+    if (servicos.length < initialLength) {
+      await saveServicos(servicos);
+      console.log(`Serviço com ID ${id} deletado.`);
+    } else {
+      console.warn(`Serviço com ID ${id} não encontrado para deletar.`);
+    }
+  } catch (e) {
+    console.error('Erro ao deletar serviço:', e);
+    Alert.alert('Erro', 'Não foi possível deletar o serviço.');
+  }
+};
+
+/**
+ * Limpa todos os serviços do armazenamento.
+ * CUIDADO: Isso irá apagar todos os dados de serviços!
+ */
+export const clearAllServicos = async (): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(SERVICOS_STORAGE_KEY);
+    console.log('Todos os serviços foram removidos do AsyncStorage.');
+  } catch (e) {
+    console.error('Erro ao limpar serviços do AsyncStorage:', e);
+    Alert.alert('Erro', 'Não foi possível limpar os serviços.');
+  }
+};
+
