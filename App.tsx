@@ -9,7 +9,6 @@ import LoginScreen from './src/screens/LoginScreen';
 import Dashboard from './src/screens/Dashboard';
 import CadastroClient from './src/screens/CadastroClient';
 import Servicos from './src/screens/Servicos';
-import Estoque from './src/screens/Estoque';
 import EstoqueScreen from './src/screens/Estoque';
 
 // Cria uma instância do Stack Navigator.
