@@ -1,5 +1,3 @@
-// src/screens/LoginScreen.tsx
-
 import React, { useState } from 'react';
 import {
   View,
@@ -10,6 +8,7 @@ import {
   Alert, // Usado para exibir mensagens de sucesso/erro
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native'; // Importa useNavigation e NavigationProp para navegação
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Define os tipos de parâmetros para as rotas do seu Stack Navigator.
 // Isso ajuda o TypeScript a entender quais rotas estão disponíveis e quais parâmetros elas esperam.
@@ -21,7 +20,7 @@ type RootStackParamList = {
 
 export default function LoginScreen() {
   // Obtém o objeto de navegação, tipado com as rotas definidas acima.
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   // Estados para armazenar o que o usuário digita nos campos de usuário e senha
   const [username, setUsername] = useState<string>('');
@@ -51,6 +50,7 @@ export default function LoginScreen() {
       <TextInput
         style={styles.input}
         placeholder="Usuário" // Texto que aparece antes do usuário digitar
+        placeholderTextColor="#888"
         value={username} // O valor atual do campo, ligado ao estado 'username'
         onChangeText={setUsername} // Função que atualiza o estado 'username' a cada digitação
         autoCapitalize="none" // Desativa a capitalização automática para nomes de usuário
@@ -61,6 +61,7 @@ export default function LoginScreen() {
       <TextInput
         style={styles.input}
         placeholder="Senha" // Texto que aparece antes do usuário digitar
+        placeholderTextColor="#888"
         value={password} // O valor atual do campo, ligado ao estado 'password'
         onChangeText={setPassword} // Função que atualiza o estado 'password' a cada digitação
         secureTextEntry // Faz com que o texto digitado apareça como bolinhas (para senhas)

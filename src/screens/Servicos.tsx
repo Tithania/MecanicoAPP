@@ -68,18 +68,22 @@ export default function Servicos() { // Nome do componente atualizado
         <TextInput
           style={styles.input}
           placeholder="Nome do Cliente"
+          placeholderTextColor="#888"
+          
           value={nomeCliente}
           onChangeText={setNomeCliente}
         />
         <TextInput
           style={styles.input}
           placeholder="Carro (Ex: Fiat Palio)"
+          placeholderTextColor="#888"
           value={carro}
           onChangeText={setCarro}
         />
         <TextInput
           style={styles.input}
-          placeholder="Placa (Ex: ABC-1234)"
+          placeholder="Placa (Ex: ABC-1254)"
+          placeholderTextColor="#888"
           value={placa}
           onChangeText={setPlaca}
           autoCapitalize="characters" // Capitaliza letras para placas
@@ -87,12 +91,14 @@ export default function Servicos() { // Nome do componente atualizado
         <TextInput
           style={styles.input}
           placeholder="Modelo (Ex: ELX)"
+          placeholderTextColor="#888"
           value={modelo}
           onChangeText={setModelo}
         />
         <TextInput
           style={styles.input}
           placeholder="Ano (Ex: 2010)"
+          placeholderTextColor="#888"
           value={ano}
           onChangeText={setAno}
           keyboardType="numeric" // Teclado numérico para o ano

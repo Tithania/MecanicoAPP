@@ -152,12 +152,14 @@ export default function EstoqueScreen() { // Nome do componente
             <TextInput
               style={styles.input}
               placeholder="Nome do Item"
+              placeholderTextColor="#888"
               value={nomeItem}
               onChangeText={setNomeItem}
             />
             <TextInput
               style={styles.input}
               placeholder="Quantidade"
+              placeholderTextColor="#888"
               value={quantidade}
               onChangeText={setQuantidade}
               keyboardType="numeric"
@@ -165,6 +167,7 @@ export default function EstoqueScreen() { // Nome do componente
             <TextInput
               style={styles.input}
               placeholder="Preço Unitário (Ex: 12.50)"
+              placeholderTextColor="#888"
               value={precoUnitario}
               onChangeText={setPrecoUnitario}
               keyboardType="numeric"

@@ -1,5 +1,3 @@
-// src/screens/CadastroClient.tsx
-
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -8,13 +6,13 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  Alert, // Usado para exibir alertas ao usuário
+  Alert, //alertas ao usuário
   TextInput,
 } from 'react-native';
 // Importa as funções e a interface do seu arquivo de gerenciamento de dados (AsyncStorage)
 import { getClientes, addCliente, deleteCliente, Cliente, clearAllClientes } from '../database/asyncStorage';
 
-export default function CadastroClient() { // Nome do componente atualizado
+export default function CadastroClient() {
   // Estados para gerenciar os dados do formulário de cliente
   const [clientes, setClientes] = useState<Cliente[]>([]); // Lista de clientes carregados
   const [nome, setNome] = useState<string>(''); // Nome do cliente no input
@@ -70,7 +68,7 @@ export default function CadastroClient() { // Nome do componente atualizado
       'Confirmar Exclusão',
       'Tem certeza que deseja excluir este cliente?',
       [
-        { text: 'Cancelar', style: 'cancel' }, // Botão de cancelar
+        { text: 'Cancelar', style: 'cancel' },
         {
           text: 'Excluir', // Botão de confirmar exclusão
           onPress: async () => {
@@ -90,7 +88,7 @@ export default function CadastroClient() { // Nome do componente atualizado
   };
 
   /**
-   * Lida com a limpeza de todos os clientes.
+   *limpeza de todos os clientes.
    * Exibe uma confirmação antes de limpar e recarrega a lista (que ficará vazia).
    */
   const handleClearAllClientes = async () => {
@@ -128,12 +126,14 @@ export default function CadastroClient() { // Nome do componente atualizado
         <TextInput
           style={styles.input}
           placeholder="Nome do Cliente"
+          placeholderTextColor="#888"
           value={nome}
           onChangeText={setNome}
         />
         <TextInput
           style={styles.input}
           placeholder="Telefone do Cliente"
+          placeholderTextColor="#888"
           value={telefone}
           onChangeText={setTelefone}
           keyboardType="phone-pad" // Teclado numérico para telefone
@@ -141,6 +141,7 @@ export default function CadastroClient() { // Nome do componente atualizado
         <TextInput
           style={styles.input}
           placeholder="Endereço do Cliente (Opcional)"
+          placeholderTextColor="#888"
           value={endereco}
           onChangeText={setEndereco}
         />
