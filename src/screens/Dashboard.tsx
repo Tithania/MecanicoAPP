@@ -12,6 +12,8 @@ type RootStackParamList = {
   Dashboard: undefined; // Rota do próprio Dashboard
   Servicos: undefined;
   Estoque: undefined;
+  Agendamentos: undefined;
+  Financeiro: undefined;
   // Adicione outras rotas aqui se tiver mais telas no futuro (ex: Services, Stock)
 };
 
@@ -50,12 +52,6 @@ export default function DashboardScreen() {
             <Text style={styles.cardDescription}>Registre um novo serviço para um veículo.</Text>
           </TouchableOpacity>
 
-          {/* Card de Serviços Cadastrados (Exemplo - pode ser uma lista de serviços cadastrados) */}
-          <TouchableOpacity style={styles.card}>
-            <Text style={styles.cardTitle}>Serviços Cadastrados</Text>
-            <Text style={styles.cardDescription}>Visualize e gerencie os serviços existentes.</Text>
-          </TouchableOpacity>
-
           {/* Card de Estoque (Exemplo de futura expansão) */}
           <TouchableOpacity
             style={styles.card}
@@ -64,6 +60,23 @@ export default function DashboardScreen() {
             <Text style={styles.cardTitle}>Estoque</Text>
             <Text style={styles.cardDescription}>Controle o estoque de peças e produtos.</Text>
           </TouchableOpacity>
+
+          {/* Card de Financeiro */}
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Financeiro')}
+          >
+            <Text style={styles.cardTitle}>Financeiro</Text>
+            <Text style={styles.cardDescription}>Gerencie receitas, despesas e a receber.</Text>
+          </TouchableOpacity>
+
+          {/* NOVO: Card de Agendamentos */}
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Agendamentos')}
+          ></TouchableOpacity>
+
+          
         </View>
 
         {/* Botão de Sair/Logout */}

@@ -1,5 +1,3 @@
-// src/screens/Servicos.tsx
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -9,23 +7,21 @@ import {
   StyleSheet,
   Alert,
   SafeAreaView,
-  FlatList, // Usaremos FlatList para a lista de serviços
-  KeyboardAvoidingView, // Para ajustar o layout com o teclado
+  FlatList, // FlatList para a lista de serviços
+  KeyboardAvoidingView, // ajustar o layout com o teclado
   Platform, // Para verificar a plataforma
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-// ALTERAÇÃO: Importa a interface 'Servico' explicitamente como um tipo.
-import { addServico, getServicos, deleteServico, type Servicos } from '../database/asyncStorage'; // Importa funções e interface de serviço
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+import { addServico, getServicos, deleteServico, type Servicos } from '../database/asyncStorage'; // Importa funções e interface
 
 // Define os tipos de parâmetros para as rotas do seu Stack Navigator
 type RootStackParamList = {
   Login: undefined;
   Dashboard: undefined;
   CadastroClient: undefined;
-  Servicos: undefined; // Rota para esta tela (agora com tudo)
+  Servicos: undefined; 
   Estoque: undefined;
 };
 

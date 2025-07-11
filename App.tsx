@@ -1,5 +1,3 @@
-// App.tsx
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'; // Container para o sistema de navegação
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; // Navigator para navegação em pilha
@@ -10,6 +8,8 @@ import Dashboard from './src/screens/Dashboard';
 import CadastroClient from './src/screens/CadastroClient';
 import Servicos from './src/screens/Servicos';
 import EstoqueScreen from './src/screens/Estoque';
+import FinanceiroScreen from './src/screens/Financeiro';
+import AgendamentosScreen from './src/screens/Agendamentos';
 
 // Cria uma instância do Stack Navigator.
 // 'Stack' será usado para definir as telas e suas opções de navegação.
@@ -63,6 +63,20 @@ export default function App() {
         name="Estoque"
         component={EstoqueScreen}
         options={{title: 'Gerenciamento de Estoque'}}
+        />
+
+        {/* Tela de Gerenciamento Financeiro */}
+        <Stack.Screen
+          name="Financeiro"
+          component={FinanceiroScreen}
+          options={{ title: 'Gerenciamento Financeiro' }}
+        />
+
+        {/*Tela de Gerenciamento de Agendamentos */}
+        <Stack.Screen
+          name="Agendamentos" // Nome da rota para a tela de Agendamentos
+          component={AgendamentosScreen} // Componente da tela
+          options={{ title: 'Gerenciamento de Agendamentos' }} // Título do cabeçalho
         />
 
         {/*
