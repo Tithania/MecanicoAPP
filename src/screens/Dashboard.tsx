@@ -74,7 +74,10 @@ export default function DashboardScreen() {
           <TouchableOpacity
             style={styles.card}
             onPress={() => navigation.navigate('Agendamentos')}
-          ></TouchableOpacity>
+          >
+            <Text style={styles.cardTitle}>Agendamentos</Text>
+            <Text style={styles.cardDescription}>Gerencie todos os agendamentos.</Text>
+          </TouchableOpacity>
 
           
         </View>
